@@ -22,6 +22,10 @@ enum class Separator {
     BOTTOM
 };
 
+typedef std::vector<std::string> Columns;
+typedef std::vector<ConsoleTableRow> Rows;
+
+
 class ConsoleTable {
 public:
 
@@ -59,10 +63,10 @@ private:
     unsigned int padding = 1;
 
     /// Vector of all columns of the ConsoleTable
-    std::vector<std::string> columns;
+    Columns columns;
 
     /// Vector of all rows in the ConsoleTable
-    std::vector<ConsoleTableRow> entries;
+    Rows rows;
 
     // Table Style variables
     std::string style_line_horizontal;

@@ -43,7 +43,7 @@ int main() {
     row4.addEntry("Icelandic Krona", 4);
     ct.addRow(row4);
 
-    // Print all entries
+    // Print all rows
     ct.printTable();
 
     sleep(1);

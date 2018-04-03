@@ -14,7 +14,7 @@ void ConsoleTable::printTable() {
 
     // Calculate column maxima
     std::vector<int> maxWidths(columns.size());
-    for (auto &entry : entries) {
+    for (auto &entry : rows) {
         for (int col = 0; col < columns.size(); col++) {
             std::string cellText = entry.getEntry().at(col);
             if (columns.at(col).length() > maxWidths.at(col))
@@ -40,15 +40,15 @@ void ConsoleTable::printTable() {
     printSeparator(maxWidths, Separator::MIDDLE, false);
 
     // Print cell values
-    for (int row = 0; row < entries.size(); row++) {
+    for (int row = 0; row < rows.size(); row++) {
         for (int col = 0; col < columns.size(); col++) {
-            std::string cellText = entries.at(row).getEntry().at(col);
+            std::string cellText = rows.at(row).getEntry().at(col);
             std::string paddedText = cellText + std::string(maxWidths.at(col) - cellText.length(), ' ');
             std::cout << style_line_vertical << std::string(padding, ' ') << paddedText
                       << std::string(padding, ' ');
         }
         std::cout << style_line_vertical << std::endl;
-        if (row == entries.size() - 1)
+        if (row == rows.size() - 1)
             printSeparator(maxWidths, Separator::BOTTOM, false);
         else
             printSeparator(maxWidths, Separator::MIDDLE, true);
@@ -101,24 +101,24 @@ void ConsoleTable::printSeparator(const std::vector<int> &maxWidths, Separator s
 }
 
 void ConsoleTable::addRow(ConsoleTableRow item) {
-    entries.push_back(item);
+    rows.push_back(item);
 }
 
 bool ConsoleTable::removeRow(int index) {
-    if (index > entries.size())
+    if (index > rows.size())
         return false;
-    entries.erase(entries.begin() + index);
+    rows.erase(rows.begin() + index);
     return true;
 }
 
 bool ConsoleTable::editRow(std::string data, int row, int col) {
-    if (row > entries.size())
+    if (row > rows.size())
         return false;
 
     if (col > columns.size())
         return false;
 
-    auto entry = entries.at(row);
+    auto entry = rows.at(row);
     entry.editEntry(data, col);
     return true;
 }
