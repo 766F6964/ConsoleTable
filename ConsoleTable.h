@@ -36,7 +36,7 @@ public:
 
     /// Add a new row with information into the ConsoleTable
     /// \param item The ConsoleTableRow which should be added
-    void addRow(ConsoleTableRow *item);
+    void addRow(ConsoleTableRow item);
 
     /// Remove a row from the ConsoleTable at the given index
     /// \param index The index of the row which should be removed
@@ -62,7 +62,7 @@ private:
     std::vector<std::string> columns;
 
     /// Vector of all rows in the ConsoleTable
-    std::vector<ConsoleTableRow *> entries;
+    std::vector<ConsoleTableRow> entries;
 
     // Table Style variables
     std::string style_line_horizontal;
