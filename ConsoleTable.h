@@ -81,6 +81,8 @@ private:
     std::string style_edge_bottom_left;
     std::string style_edge_bottom_right;
 
+    std::string space = " ";
+
     /// Prints the horizontal seperator lines for the table
     /// \param maxWidths A vector that holds the maximum of all items in each column
     /// \param separator Defines what kind of seperator is used (Top, Middle, Bottom)
@@ -92,7 +94,15 @@ private:
     /// \param style The style of the ConsoleTable (BASIC, LINED, DOUBLELINED)
     void setTableStyle(TableStyle style);
 
+
+
 };
+
+/// Repeats a string n times
+/// \param str The string to repeat
+/// \param repeats How many times should the string get repeated
+/// \return The repeated string
+std::string operator*(const std::string &str, std::size_t repeats);
 
 
 #endif //CONSOLETABLE_CONSOLETABLE_H

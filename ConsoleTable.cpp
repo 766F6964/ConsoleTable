@@ -31,9 +31,8 @@ void ConsoleTable::printTable() {
     for (int col = 0; col < columns.size(); col++) {
         std::string cellText = columns.at(col);
         int len = cellText.length();
-        std::string paddedText = cellText + std::string(maxWidths.at(col) - len, ' ');
-        std::cout << style_line_vertical << std::string(padding, ' ') << paddedText
-                  << std::string(padding, ' ');
+        std::string paddedText = cellText + space * (maxWidths.at(col) - len);
+        std::cout << style_line_vertical << space * padding << paddedText << space * padding;
         std::cout << (col == columns.size() - 1 ? style_line_vertical + "\n" : "");
     }
 
@@ -43,9 +42,9 @@ void ConsoleTable::printTable() {
     for (int row = 0; row < rows.size(); row++) {
         for (int col = 0; col < columns.size(); col++) {
             std::string cellText = rows.at(row).getEntry().at(col);
-            std::string paddedText = cellText + std::string(maxWidths.at(col) - cellText.length(), ' ');
-            std::cout << style_line_vertical << std::string(padding, ' ') << paddedText
-                      << std::string(padding, ' ');
+            std::string paddedText = cellText + space * (maxWidths.at(col) - cellText.length());
+            std::cout << style_line_vertical << space * padding << paddedText
+                      << space * padding;
         }
         std::cout << style_line_vertical << std::endl;
         if (row == rows.size() - 1)
@@ -60,25 +59,25 @@ void ConsoleTable::printSeparator(const std::vector<int> &maxWidths, Separator s
     for (int col = 0; col < columns.size(); ++col) {
 
         switch (separator) {
-            case Separator::TOP:{
+            case Separator::TOP: {
                 std::cout << (col == 0 ? style_edge_top_left : "");
                 break;
             }
-            case Separator::MIDDLE:{
+            case Separator::MIDDLE: {
                 if (invisibleRowLines)
                     continue;
                 std::cout << (col == 0 ? style_t_intersect_left : "");
                 break;
             }
-            case Separator::BOTTOM:{
+            case Separator::BOTTOM: {
                 std::cout << (col == 0 ? style_edge_bottom_left : "");
                 break;
             }
         }
 
-        std::cout << ConsoleTableUtils::repeatString(style_line_horizontal, padding);
-        std::cout << ConsoleTableUtils::repeatString(style_line_horizontal, maxWidths.at(col));
-        std::cout << ConsoleTableUtils::repeatString(style_line_horizontal, padding);
+        std::cout << style_line_horizontal * padding;
+        std::cout << style_line_horizontal * maxWidths.at(col);
+        std::cout << style_line_horizontal * padding;
 
         switch (separator) {
             case Separator::TOP: {
@@ -174,4 +173,12 @@ void ConsoleTable::setTableStyle(TableStyle style) {
             break;
         }
     }
+}
+
+std::string operator*(const std::string &str, std::size_t repeats) {
+    std::string ret;
+    ret.reserve(str.size() * repeats);
+    for (; repeats; --repeats)
+        ret.append(str);
+    return ret;
 }
