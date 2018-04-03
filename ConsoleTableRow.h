@@ -1,5 +1,5 @@
-#ifndef CONSOLETABLE_CONSOLETABLEENTRY_H
-#define CONSOLETABLE_CONSOLETABLEENTRY_H
+#ifndef CONSOLETABLE_CONSOLETABLEROW_H
+#define CONSOLETABLE_CONSOLETABLEROW_H
 
 #include <string>
 #include <vector>
@@ -7,17 +7,17 @@
 class ConsoleTableRow {
 public:
 
-    ConsoleTableRow(int width);
+    explicit ConsoleTableRow(int width);
 
     void addEntry(std::string data, int column);
 
     void editEntry(std::string data, int column);
 
-    std::vector <std::string> getEntry();
+    std::vector <std::string> getEntry() const&;
 
 private:
     std::vector <std::string> row;
 };
 
 
-#endif //CONSOLETABLE_CONSOLETABLEENTRY_H
+#endif //CONSOLETABLE_CONSOLETABLEROW_H

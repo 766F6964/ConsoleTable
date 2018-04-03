@@ -25,7 +25,7 @@ void ConsoleTable::printTable() {
         }
     }
 
-    printHorizontalSeperator(maxWidths, SEPERATOR_TOP);
+    printHorizontalSeperator(maxWidths, Seperator::TOP, false);
 
     // Print column values
     for (int col = 0; col < this->columns.size(); col++) {
@@ -37,7 +37,7 @@ void ConsoleTable::printTable() {
         std::cout << (col == this->columns.size() - 1 ? this->style_line_vertical + "\n" : "");
     }
 
-    printHorizontalSeperator(maxWidths, SEPERATOR_MIDDLE);
+    printHorizontalSeperator(maxWidths, Seperator::MIDDLE, false);
 
     // Print cell values
     for (int row = 0; row < this->entries.size(); row++) {
@@ -49,41 +49,43 @@ void ConsoleTable::printTable() {
         }
         std::cout << this->style_line_vertical << std::endl;
         if (row == this->entries.size() - 1)
-            printHorizontalSeperator(maxWidths, SEPERATOR_BOTTOM);
+            printHorizontalSeperator(maxWidths, Seperator::BOTTOM, false);
         else
-            printHorizontalSeperator(maxWidths, SEPERATOR_MIDDLE);
+            printHorizontalSeperator(maxWidths, Seperator::MIDDLE, true);
     }
 }
 
-void ConsoleTable::printHorizontalSeperator(const std::vector<int> &maxWidths, HorizontalSeperator seperator) const {
+void ConsoleTable::printHorizontalSeperator(const std::vector<int> &maxWidths, Seperator seperator,
+                                            bool invisibileRowLines) const {
     for (int col = 0; col < columns.size(); ++col) {
 
         switch (seperator) {
-            case SEPERATOR_TOP: {
+            case Seperator::TOP: {
                 std::cout << (col == 0 ? this->style_edge_topleft : "");
-                std::cout << utils->repeatString(this->style_line_horizontal, this->padding);
-                std::cout << utils->repeatString(this->style_line_horizontal, maxWidths[col]);
-                std::cout << utils->repeatString(this->style_line_horizontal, this->padding);
+                std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
+                std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, maxWidths[col]);
+                std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
                 std::cout << (col != columns.size() - 1 ? this->style_t_intersect_top : this->style_edge_topright);
                 std::cout << (col == columns.size() - 1 ? "\n" : "");
                 break;
             }
-            case SEPERATOR_MIDDLE: {
-                std::cout << (col == 0 ? this->style_t_intersect_left : "");
-                std::cout << utils->repeatString(this->style_line_horizontal, this->padding);
-                std::cout << utils->repeatString(this->style_line_horizontal, maxWidths[col]);
-                std::cout << utils->repeatString(this->style_line_horizontal, this->padding);
-                std::cout << (col != columns.size() - 1 ? this->style_line_cross : this->style_t_intersect_right);
-                std::cout << (col == columns.size() - 1 ? "\n" : "");
+            case Seperator::MIDDLE: {
+                if (!invisibileRowLines) {
+                    std::cout << (col == 0 ? this->style_t_intersect_left : "");
+                    std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
+                    std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, maxWidths[col]);
+                    std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
+                    std::cout << (col != columns.size() - 1 ? this->style_line_cross : this->style_t_intersect_right);
+                    std::cout << (col == columns.size() - 1 ? "\n" : "");
+                }
                 break;
             }
-            case SEPERATOR_BOTTOM: {
+            case Seperator::BOTTOM: {
                 std::cout << (col == 0 ? this->style_edge_buttomleft : "");
-                std::cout << utils->repeatString(this->style_line_horizontal, this->padding);
-                std::cout << utils->repeatString(this->style_line_horizontal, maxWidths[col]);
-                std::cout << utils->repeatString(this->style_line_horizontal, this->padding);
-                std::cout
-                        << (col != columns.size() - 1 ? this->style_t_intersect_bottom : this->style_edge_buttomright);
+                std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
+                std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, maxWidths[col]);
+                std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
+                std::cout << (col != columns.size() - 1 ? this->style_t_intersect_bottom : this->style_edge_buttomright);
                 std::cout << (col == columns.size() - 1 ? "\n" : "");
                 break;
             }
@@ -103,10 +105,10 @@ bool ConsoleTable::removeRow(int index) {
 }
 
 bool ConsoleTable::editRow(std::string data, int row, int col) {
-    if(row > this->entries.size())
+    if (row > this->entries.size())
         return false;
 
-    if(col > this->columns.size())
+    if (col > this->columns.size())
         return false;
 
     auto entry = this->entries[row];
@@ -120,7 +122,7 @@ void ConsoleTable::setPadding(unsigned int width) {
 
 void ConsoleTable::setTableStyle(TableStyle style) {
     switch (style) {
-        case BASIC: {
+        case TableStyle::BASIC: {
             this->style_line_horizontal = "-";
             this->style_line_vertical = "|";
             this->style_line_cross = "+";
@@ -136,7 +138,7 @@ void ConsoleTable::setTableStyle(TableStyle style) {
             this->style_edge_buttomright = "+";
             break;
         }
-        case LINED: {
+        case TableStyle::LINED: {
             this->style_line_horizontal = "━";
             this->style_line_vertical = "┃";
             this->style_line_cross = "╋";
@@ -152,7 +154,7 @@ void ConsoleTable::setTableStyle(TableStyle style) {
             this->style_edge_buttomright = "┛";
             break;
         }
-        case DOUBLE_LINE: {
+        case TableStyle::DOUBLE_LINE: {
             this->style_line_horizontal = "═";
             this->style_line_vertical = "║";
             this->style_line_cross = "╬";

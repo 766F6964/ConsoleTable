@@ -3,8 +3,7 @@
 #include "ConsoleTable.h"
 
 int main() {
-
-    ConsoleTable ct(BASIC);
+    ConsoleTable ct(TableStyle::BASIC);
     ct.setPadding(1);
 
     ct.addColumn("Country");
@@ -52,7 +51,7 @@ int main() {
     sleep(1);
 
     // Update entry
-    ct.editRow("NEW DATA",0, 2);
+    ct.editRow("New Name :)",0, 1);
     ct.printTable();
 
     return 0;

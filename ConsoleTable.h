@@ -4,20 +4,21 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
+#include <memory>
 #include "ConsoleTableRow.h"
 #include "ConsoleTableUtils.h"
-#include <sstream>
 
-enum TableStyle {
+enum class TableStyle {
     BASIC,
     LINED,
     DOUBLE_LINE,
 };
 
-enum HorizontalSeperator{
-    SEPERATOR_TOP,
-    SEPERATOR_MIDDLE,
-    SEPERATOR_BOTTOM
+enum class Seperator {
+    TOP,
+    MIDDLE,
+    BOTTOM
 };
 
 class ConsoleTable {
@@ -42,8 +43,8 @@ private:
     unsigned int padding = 1;
 
     std::vector<std::string> columns;
-    std::vector<ConsoleTableRow *> entries;
-    ConsoleTableUtils* utils;
+    std::vector<ConsoleTableRow*> entries;
+    ConsoleTableUtils *utils;
 
     // Table Style variables
     std::string style_line_horizontal;
@@ -58,7 +59,8 @@ private:
     std::string style_edge_buttomleft;
     std::string style_edge_buttomright;
 
-    void printHorizontalSeperator(const std::vector<int> &maxWidths, HorizontalSeperator seperator) const;
+    void printHorizontalSeperator(const std::vector<int> &maxWidths, Seperator seperator,
+                                  bool invisibileRowLines) const;
 
     void setTableStyle(TableStyle style);
 

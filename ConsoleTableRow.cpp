@@ -8,7 +8,7 @@ void ConsoleTableRow::addEntry(std::string data, int column) {
     row[column] = data;
 }
 
-std::vector<std::string> ConsoleTableRow::getEntry() {
+std::vector<std::string> ConsoleTableRow::getEntry() const&{
     return this->row;
 }
 

@@ -3,4 +3,4 @@ project(ConsoleTable)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(ConsoleTable main.cpp ConsoleTable.cpp ConsoleTable.h ConsoleTableRow.cpp ConsoleTableRow.h ConsoleTableUtils.cpp ConsoleTableUtils.h)
+add_executable(ConsoleTable main.cpp ConsoleTable.cpp ConsoleTable.h ConsoleTableRow.cpp ConsoleTableRow.h ConsoleTableUtils.h)
