@@ -7,7 +7,7 @@
 class ConsoleTableUtils {
 public:
 
-    static std::string repeatString(std::string input, int n){
+    static std::string repeatString(const std::string &input, int n){
         std::ostringstream os;
         for (int i = 0; i < n; i++)
             os << input;
@@ -15,6 +15,5 @@ public:
     }
 
 };
-
 
 #endif //CONSOLETABLE_CONSOLETABLEUTILS_H
