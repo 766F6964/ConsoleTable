@@ -14,9 +14,9 @@ void ConsoleTable::printTable() {
 
     // Calculate column maxima
     std::vector<int> maxWidths(this->columns.size());
-    for (auto &entrie : this->entries) {
+    for (auto &entry : this->entries) {
         for (int col = 0; col < this->columns.size(); col++) {
-            std::string cellText = entrie->getEntry()[col];
+            std::string cellText = entry->getEntry()[col];
             if (this->columns[col].length() > maxWidths[col])
                 maxWidths[col] = this->columns[col].length();
             if (maxWidths[col] < cellText.length()) {
@@ -25,7 +25,7 @@ void ConsoleTable::printTable() {
         }
     }
 
-    printHorizontalSeperator(maxWidths, Separator::TOP, false);
+    printSeparator(maxWidths, Separator::TOP, false);
 
     // Print column values
     for (int col = 0; col < this->columns.size(); col++) {
@@ -37,7 +37,7 @@ void ConsoleTable::printTable() {
         std::cout << (col == this->columns.size() - 1 ? this->style_line_vertical + "\n" : "");
     }
 
-    printHorizontalSeperator(maxWidths, Separator::MIDDLE, false);
+    printSeparator(maxWidths, Separator::MIDDLE, false);
 
     // Print cell values
     for (int row = 0; row < this->entries.size(); row++) {
@@ -49,22 +49,22 @@ void ConsoleTable::printTable() {
         }
         std::cout << this->style_line_vertical << std::endl;
         if (row == this->entries.size() - 1)
-            printHorizontalSeperator(maxWidths, Separator::BOTTOM, false);
+            printSeparator(maxWidths, Separator::BOTTOM, false);
         else
-            printHorizontalSeperator(maxWidths, Separator::MIDDLE, true);
+            printSeparator(maxWidths, Separator::MIDDLE, true);
     }
 }
 
-void ConsoleTable::printHorizontalSeperator(const std::vector<int> &maxWidths, Separator separator,
-                                            bool invisibleRowLines) const {
+void ConsoleTable::printSeparator(const std::vector<int> &maxWidths, Separator separator,
+                                  bool invisibleRowLines) const {
     for (int col = 0; col < columns.size(); ++col) {
         switch (separator) {
             case Separator::TOP: {
-                std::cout << (col == 0 ? this->style_edge_topleft : "");
+                std::cout << (col == 0 ? this->style_edge_top_left : "");
                 std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
                 std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, maxWidths[col]);
                 std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
-                std::cout << (col != columns.size() - 1 ? this->style_t_intersect_top : this->style_edge_topright);
+                std::cout << (col != columns.size() - 1 ? this->style_t_intersect_top : this->style_edge_top_right);
                 std::cout << (col == columns.size() - 1 ? "\n" : "");
                 break;
             }
@@ -81,12 +81,12 @@ void ConsoleTable::printHorizontalSeperator(const std::vector<int> &maxWidths, S
                 break;
             }
             case Separator::BOTTOM: {
-                std::cout << (col == 0 ? this->style_edge_buttomleft : "");
+                std::cout << (col == 0 ? this->style_edge_bottom_left : "");
                 std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
                 std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, maxWidths[col]);
                 std::cout << ConsoleTableUtils::repeatString(this->style_line_horizontal, this->padding);
                 std::cout
-                        << (col != columns.size() - 1 ? this->style_t_intersect_bottom : this->style_edge_buttomright);
+                        << (col != columns.size() - 1 ? this->style_t_intersect_bottom : this->style_edge_bottom_right);
                 std::cout << (col == columns.size() - 1 ? "\n" : "");
                 break;
             }
@@ -129,10 +129,10 @@ void ConsoleTable::setTableStyle(TableStyle style) {
             this->style_t_intersect_top = "+";
             this->style_t_intersect_bottom = "+";
 
-            this->style_edge_topleft = "+";
-            this->style_edge_topright = "+";
-            this->style_edge_buttomleft = "+";
-            this->style_edge_buttomright = "+";
+            this->style_edge_top_left = "+";
+            this->style_edge_top_right = "+";
+            this->style_edge_bottom_left = "+";
+            this->style_edge_bottom_right = "+";
             break;
         }
         case TableStyle::LINED: {
@@ -145,10 +145,10 @@ void ConsoleTable::setTableStyle(TableStyle style) {
             this->style_t_intersect_top = "┳";
             this->style_t_intersect_bottom = "┻";
 
-            this->style_edge_topleft = "┏";
-            this->style_edge_topright = "┓";
-            this->style_edge_buttomleft = "┗";
-            this->style_edge_buttomright = "┛";
+            this->style_edge_top_left = "┏";
+            this->style_edge_top_right = "┓";
+            this->style_edge_bottom_left = "┗";
+            this->style_edge_bottom_right = "┛";
             break;
         }
         case TableStyle::DOUBLE_LINE: {
@@ -161,10 +161,10 @@ void ConsoleTable::setTableStyle(TableStyle style) {
             this->style_t_intersect_top = "╦";
             this->style_t_intersect_bottom = "╩";
 
-            this->style_edge_topleft = "╔";
-            this->style_edge_topright = "╗";
-            this->style_edge_buttomleft = "╚";
-            this->style_edge_buttomright = "╝";
+            this->style_edge_top_left = "╔";
+            this->style_edge_top_right = "╗";
+            this->style_edge_bottom_left = "╚";
+            this->style_edge_bottom_right = "╝";
             break;
         }
     }

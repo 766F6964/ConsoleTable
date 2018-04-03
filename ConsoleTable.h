@@ -25,24 +25,44 @@ enum class Separator {
 class ConsoleTable {
 public:
 
+    /// Create a new ConsoleTable
+    /// \param style The design of the console table
+    /// \param padding Additional space between the text and the cell border
     explicit ConsoleTable(TableStyle style, unsigned int padding);
 
+    /// Add a new column to the ConsoleTable
+    /// \param name The name of the column
     void addColumn(std::string name);
 
+    /// Add a new row with information into the ConsoleTable
+    /// \param item The ConsoleTableRow which should be added
     void addRow(ConsoleTableRow *item);
 
+    /// Remove a row from the ConsoleTable at the given index
+    /// \param index The index of the row which should be removed
+    /// \return True if row was removed successfully, otherwise false
     bool removeRow(int index);
 
+    /// Update the information in specific cell of a row
+    /// \param data The new data that should be set
+    /// \param row The index of the row which should be updated
+    /// \param col The index of the column that should be updated
+    /// \return True if the update was successful, otherwise false
     bool editRow(std::string data, int row, int col);
 
+    /// Displays the table with columns and all content
     void printTable();
 
 private:
 
+    /// Additional space between cell border and cell text
     unsigned int padding = 1;
 
+    /// Vector of all columns of the ConsoleTable
     std::vector<std::string> columns;
-    std::vector<ConsoleTableRow*> entries;
+
+    /// Vector of all rows in the ConsoleTable
+    std::vector<ConsoleTableRow *> entries;
 
     // Table Style variables
     std::string style_line_horizontal;
@@ -52,14 +72,20 @@ private:
     std::string style_t_intersect_left;
     std::string style_t_intersect_top;
     std::string style_t_intersect_bottom;
-    std::string style_edge_topleft;
-    std::string style_edge_topright;
-    std::string style_edge_buttomleft;
-    std::string style_edge_buttomright;
+    std::string style_edge_top_left;
+    std::string style_edge_top_right;
+    std::string style_edge_bottom_left;
+    std::string style_edge_bottom_right;
 
-    void printHorizontalSeperator(const std::vector<int> &maxWidths, Separator separator,
-                                  bool invisibleRowLines) const;
+    /// Prints the horizontal seperator lines for the table
+    /// \param maxWidths A vector that holds the maximum of all items in each column
+    /// \param separator Defines what kind of seperator is used (Top, Middle, Bottom)
+    /// \param invisibleRowLines If true seperator lines are only used between column headers and the first row, otherwise between every row
+    void printSeparator(const std::vector<int> &maxWidths, Separator separator,
+                        bool invisibleRowLines) const;
 
+    /// Sets the design for the ConsoleTable
+    /// \param style The style of the ConsoleTable (BASIC, LINED, DOUBLELINED)
     void setTableStyle(TableStyle style);
 
 };
