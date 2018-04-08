@@ -33,6 +33,12 @@ public:
     void setStyle(unsigned int n);
 
 
+    /// Sorts the table rows based on the first column
+    /// \param ascending Should table be sorted ascending or descending
+    /// \return True if sorting was successful, otherwise false
+    bool sort(bool ascending);
+
+
     /// Adds a new row to the table
     /// \param row A list of strings to add as row
     /// \return True if the value was added successfully, otherwise false
@@ -113,7 +119,6 @@ private:
     /// \param rows The Rows-object that holds all rows of the table
     /// \return A formatted string of all rows in the table
     std::string getRows(Rows rows) const;
-
 
 
     /// Writes the entire table with all its contents in the output stream

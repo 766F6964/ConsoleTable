@@ -126,6 +126,14 @@ std::ostream &operator<<(std::ostream &out, const ConsoleTable &consoleTable) {
     return out;
 }
 
+bool ConsoleTable::sort(bool ascending) {
+    if (ascending)
+        std::sort(rows.begin(), rows.end(), std::less<std::vector<std::string>>());
+    else
+        std::sort(rows.begin(), rows.end(), std::greater<std::vector<std::string>>());
+    return true;
+}
+
 
 std::string operator*(const std::string &other, int repeats) {
     std::string ret;
