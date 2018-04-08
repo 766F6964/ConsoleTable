@@ -1,184 +1,136 @@
 #include "ConsoleTable.h"
 
 
-ConsoleTable::ConsoleTable(TableStyle style, unsigned int padding) {
-    setTableStyle(style);
-    this->padding = padding;
-}
+ConsoleTable::ConsoleTable(std::initializer_list<std::string> cols) {
+    headers = {cols};
 
-void ConsoleTable::addColumn(std::string name) {
-    columns.push_back(name);
-}
-
-void ConsoleTable::printTable() {
-
-    // Calculate column maxima
-    std::vector<int> maxWidths(columns.size());
-    for (auto &entry : rows) {
-        for (int col = 0; col < columns.size(); col++) {
-            std::string cellText = entry.getEntry().at(col);
-            if (columns.at(col).length() > maxWidths.at(col))
-                maxWidths.at(col) = columns.at(col).length();
-            if (maxWidths.at(col) < cellText.length()) {
-                maxWidths.at(col) = cellText.length();
-            }
-        }
-    }
-
-    printSeparator(maxWidths, Separator::TOP, false);
-
-    // Print column values
-    for (int col = 0; col < columns.size(); col++) {
-        std::string cellText = columns.at(col);
-        int len = cellText.length();
-        std::string paddedText = cellText + space * (maxWidths.at(col) - len);
-        std::cout << style_line_vertical << space * padding << paddedText << space * padding;
-        std::cout << (col == columns.size() - 1 ? style_line_vertical + "\n" : "");
-    }
-
-    printSeparator(maxWidths, Separator::MIDDLE, false);
-
-    // Print cell values
-    for (int row = 0; row < rows.size(); row++) {
-        for (int col = 0; col < columns.size(); col++) {
-            std::string cellText = rows.at(row).getEntry().at(col);
-            std::string paddedText = cellText + space * (maxWidths.at(col) - cellText.length());
-            std::cout << style_line_vertical << space * padding << paddedText
-                      << space * padding;
-        }
-        std::cout << style_line_vertical << std::endl;
-        if (row == rows.size() - 1)
-            printSeparator(maxWidths, Separator::BOTTOM, false);
-        else
-            printSeparator(maxWidths, Separator::MIDDLE, true);
+    for (std::string column : headers) {
+        widths.push_back(column.length());
     }
 }
 
-void ConsoleTable::printSeparator(const std::vector<int> &maxWidths, Separator separator,
-                                  bool invisibleRowLines) const {
-    for (int col = 0; col < columns.size(); ++col) {
 
-        switch (separator) {
-            case Separator::TOP: {
-                std::cout << (col == 0 ? style_edge_top_left : "");
-                break;
-            }
-            case Separator::MIDDLE: {
-                if (invisibleRowLines)
-                    continue;
-                std::cout << (col == 0 ? style_t_intersect_left : "");
-                break;
-            }
-            case Separator::BOTTOM: {
-                std::cout << (col == 0 ? style_edge_bottom_left : "");
-                break;
-            }
-        }
+void ConsoleTable::setPadding(unsigned int n) {
+    this->padding = n;
+}
 
-        std::cout << style_line_horizontal * padding;
-        std::cout << style_line_horizontal * maxWidths.at(col);
-        std::cout << style_line_horizontal * padding;
 
-        switch (separator) {
-            case Separator::TOP: {
-                std::cout << (col != columns.size() - 1 ? style_t_intersect_top : style_edge_top_right);
-                break;
-            }
-            case Separator::MIDDLE: {
-                std::cout << (col != columns.size() - 1 ? style_line_cross : style_t_intersect_right);
-                break;
-            }
-            case Separator::BOTTOM: {
-                std::cout << (col != columns.size() - 1 ? style_t_intersect_bottom : style_edge_bottom_right);
-                break;
-            }
-        }
-
-        std::cout << (col == columns.size() - 1 ? "\n" : "");
-
+void ConsoleTable::setStyle(unsigned int n) {
+    switch (n) {
+        case 0 :
+            style = BasicStyle;
+            break;
+        case 1 :
+            style = LineStyle;
+            break;
+        case 2 :
+            style = DoubleLineStyle;
+            break;
+        default :
+            style = BasicStyle;
+            break;
     }
 }
 
-void ConsoleTable::addRow(ConsoleTableRow item) {
-    rows.push_back(item);
+
+bool ConsoleTable::addRow(std::initializer_list<std::string> row) {
+    if (row.size() > widths.size()) {
+        throw std::invalid_argument{"Appended row size must be same as header size"};
+    }
+
+    std::vector<std::string> r = std::vector<std::string>{row};
+    rows.push_back(r);
+    for (int i = 0; i < r.size(); ++i) {
+        widths[i] = std::max(r[i].size(), widths[i]);
+    }
+    return true;
 }
 
-bool ConsoleTable::removeRow(int index) {
+
+bool ConsoleTable::removeRow(unsigned int index) {
     if (index > rows.size())
         return false;
+
     rows.erase(rows.begin() + index);
     return true;
 }
 
-bool ConsoleTable::editRow(std::string data, int row, int col) {
-    if (row > rows.size())
-        return false;
 
-    if (col > columns.size())
-        return false;
-
-    auto entry = rows.at(row);
-    entry.editEntry(data, col);
-    return true;
-}
-
-void ConsoleTable::setTableStyle(TableStyle style) {
-    switch (style) {
-        case TableStyle::BASIC: {
-            style_line_horizontal = "-";
-            style_line_vertical = "|";
-            style_line_cross = "+";
-
-            style_t_intersect_right = "+";
-            style_t_intersect_left = "+";
-            style_t_intersect_top = "+";
-            style_t_intersect_bottom = "+";
-
-            style_edge_top_left = "+";
-            style_edge_top_right = "+";
-            style_edge_bottom_left = "+";
-            style_edge_bottom_right = "+";
-            break;
-        }
-        case TableStyle::LINED: {
-            style_line_horizontal = "━";
-            style_line_vertical = "┃";
-            style_line_cross = "╋";
-
-            style_t_intersect_right = "┫";
-            style_t_intersect_left = "┣";
-            style_t_intersect_top = "┳";
-            style_t_intersect_bottom = "┻";
-
-            style_edge_top_left = "┏";
-            style_edge_top_right = "┓";
-            style_edge_bottom_left = "┗";
-            style_edge_bottom_right = "┛";
-            break;
-        }
-        case TableStyle::DOUBLE_LINE: {
-            style_line_horizontal = "═";
-            style_line_vertical = "║";
-            style_line_cross = "╬";
-
-            style_t_intersect_right = "╣";
-            style_t_intersect_left = "╠";
-            style_t_intersect_top = "╦";
-            style_t_intersect_bottom = "╩";
-
-            style_edge_top_left = "╔";
-            style_edge_top_right = "╗";
-            style_edge_bottom_left = "╚";
-            style_edge_bottom_right = "╝";
-            break;
-        }
+ConsoleTable &ConsoleTable::operator+=(std::initializer_list<std::string> row) {
+    if (row.size() > widths.size()) {
+        throw std::invalid_argument{"Appended row size must be same as header size"};
     }
+
+    addRow(row);
+    return *this;
 }
 
-std::string operator*(const std::string &str, std::size_t repeats) {
+
+ConsoleTable &ConsoleTable::operator-=(unsigned int rowIndex) {
+    if (rows.size() < rowIndex)
+        throw std::out_of_range{"Row index out of range."};
+
+    removeRow(rowIndex);
+
+}
+
+
+std::string ConsoleTable::getLine(RowType rowType) const {
+    std::stringstream line;
+    line << rowType.left;
+    for (int i = 0; i < widths.size(); ++i) {
+        for (int j = 0; j < (widths[i] + padding + padding); ++j) {
+            line << style.horizontal;
+        }
+        line << (i == widths.size() - 1 ? rowType.right : rowType.intersect);
+    }
+    return line.str() + "\n";
+}
+
+
+std::string ConsoleTable::getHeaders(Headers headers) const {
+    std::stringstream line;
+    line << style.vertical;
+    for (int i = 0; i < headers.size(); ++i) {
+        std::string text = headers[i];
+        line << space * padding + text + space * (widths[i] - text.length()) + space * padding;
+        line << style.vertical;
+    }
+    line << "\n";
+    return line.str();
+}
+
+
+std::string ConsoleTable::getRows(Rows rows) const {
+    std::stringstream line;
+    for (int i = 0; i < rows.size(); ++i) {
+        line << style.vertical;
+        for (int j = 0; j < rows[i].size(); ++j) {
+            std::string text = rows[i][j];
+            line << space * padding + text + space * (widths[j] - text.length()) + space * padding;
+            line << style.vertical;
+        }
+        line << "\n";
+    }
+
+    return line.str();
+}
+
+
+std::ostream &operator<<(std::ostream &out, const ConsoleTable &consoleTable) {
+    out << consoleTable.getLine(consoleTable.style.top);
+    out << consoleTable.getHeaders(consoleTable.headers);
+    out << consoleTable.getLine(consoleTable.style.middle);
+    out << consoleTable.getRows(consoleTable.rows);
+    out << consoleTable.getLine(consoleTable.style.bottom);
+    return out;
+}
+
+
+std::string operator*(const std::string &other, int repeats) {
     std::string ret;
-    ret.reserve(str.size() * repeats);
+    ret.reserve(other.size() * repeats);
     for (; repeats; --repeats)
-        ret.append(str);
+        ret.append(other);
     return ret;
 }
