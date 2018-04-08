@@ -51,6 +51,13 @@ public:
     bool removeRow(unsigned int index);
 
 
+    /// Update an existing table cell with new data
+    /// \param row The index of the row that needs to be updated
+    /// \param column The index of the column that needs to be updated
+    /// \param data The new data that should be assigned to teh cell
+    void updateRow(unsigned int row, unsigned int column, std::string data);
+
+
     /// Operator of the addRow() function
     /// \param row A list of strings to add as row
     /// \return this

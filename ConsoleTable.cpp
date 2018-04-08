@@ -134,6 +134,15 @@ bool ConsoleTable::sort(bool ascending) {
     return true;
 }
 
+void ConsoleTable::updateRow(unsigned int row, unsigned int column, std::string data) {
+    if(row > rows.size() -1)
+        throw std::out_of_range{"Row index out of range."};
+    if(column > headers.size() -1)
+        throw std::out_of_range{"Column index out of range."};
+
+    rows[row][column] = data;
+}
+
 
 std::string operator*(const std::string &other, int repeats) {
     std::string ret;

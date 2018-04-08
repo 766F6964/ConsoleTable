@@ -16,7 +16,10 @@ int main() {
     table += {"Iceland", "Reykjavik", "348,580", "102,775 km2", "Icelandic Krona"};
     table += {"Netherlands", "Amsterdam", "17,200,671", "41,543 km2", "Euro"};
 
+    table.updateRow(3, 1, "NEW ENTRY");
+    table -= 2;
     table.sort(true);
+
     std::cout << table;
 
     return 0;
