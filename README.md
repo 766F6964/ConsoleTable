@@ -2,11 +2,11 @@
 ConsoleTable is a library that allows you to organize your data in a table based structure.
 
 ## Overview
-It can be very frustrating to display data in a console with proper alignement. 
-To make this easier, ConsoleTable was created.  It is a customizable text based table structure which is really convinient to use.
+Sometimes, it can be very frustrating to display data in a console with proper alignment. 
+To make this easier, ConsoleTable was created. It is a customizable text based table structure which is really convenient to use.
 It allows you to organize your data in a table structure where you can easily add, update and delete rows.
-Furthermore it comes with sorting functionality as well as different layouts the user can choose from.
-
+Furthermore, it comes with sorting functionality as well as different layouts the user can choose from.
+This is an example how the table can look like:
 ```
 +---------------+-------------+-----------------+-----------------+---------------------+
 |  Country      |  Capital    |  Population     |  Area           |  Currency           |
@@ -25,15 +25,14 @@ To create a new table, a `ConsoleTable` object must be initialized. The construc
 ```cpp
 ConsoleTable table{"Country", "Capital", "Population", "Area", "Currency"};
 ```
-Next, the padding size must be set. The padding size defines the space between the text in each cell of the table and the border of the cell. Default is `1`.
+Next, the padding size must be set. The padding size defines the spacing between the text in each cell of the table and the border of the cell. Default value is `1`.
 The padding size can be set as follows
 ```cpp
 table.setPadding(2); // Sets a padding of 2 for each cell
 ```
-The user can choose between different styles/layouts of the table. `0` is the default style. `1` is a single, and `2` a double outlined style.
-Changing the style is as simple as
+The user can choose between a total of three different table layouts. `0` is the default style. `1` is a single, and `2` a double outlined style. To change the style call
 ```cpp
-table.setStyle(0); // Sets teh default table style
+table.setStyle(0); // Sets the default table style
 ```
 It's important to note that some styles might not be displayed correctly if your system doesn't support special characters. 
 The default style should work on all system because only ASCII characters are used for the layout.
@@ -53,10 +52,11 @@ The first parameter is the index of the row, the second one the index of the col
 ```cpp
 table.updateRow(3, 1, "NEW ENTRY"); // Update row 3, column 1
 ```
-To output the table to the console, simply call
+To output the table to the console, simply use the insertion operator followed by the `ConsoleTable` object.
 ```cpp
-std::cout << table;
+std::cout << table; // Display table in the console
 ```
+
 It is also possible to sort the table based on the first column. To do that, call
 ```cpp
 table.sort(true); // Sort ascending
