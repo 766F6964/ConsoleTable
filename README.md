@@ -55,6 +55,10 @@ The first parameter is the index of the row, the second one the index of the col
 ```cpp
 table.updateRow(3, 1, "NEW ENTRY"); // Update row 3, column 1
 ```
+The same thing applies for the headers. If you want to change the text of one of the header fields, simply provide the index of the field you like to update and call
+```cpp
+table.updateHeader(3, "NEW CAPTION"); // Update headeer field at index 3 
+```
 To output the table to the console, simply use the insertion operator followed by the `ConsoleTable` object.
 ```cpp
 std::cout << table; // Display table in the console
