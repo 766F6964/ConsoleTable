@@ -1,8 +1,8 @@
 #include "ConsoleTable.h"
 
 
-ConsoleTable::ConsoleTable(std::initializer_list<std::string> cols) {
-    headers = {cols};
+ConsoleTable::ConsoleTable(std::initializer_list<std::string> headers) {
+    this->headers = {headers};
 
     for (std::string column : headers) {
         widths.push_back(column.length());
@@ -134,13 +134,20 @@ bool ConsoleTable::sort(bool ascending) {
     return true;
 }
 
-void ConsoleTable::updateRow(unsigned int row, unsigned int column, std::string data) {
+void ConsoleTable::updateRow(unsigned int row, unsigned int header, std::string data) {
     if(row > rows.size() -1)
         throw std::out_of_range{"Row index out of range."};
-    if(column > headers.size() -1)
-        throw std::out_of_range{"Column index out of range."};
+    if(header > headers.size() -1)
+        throw std::out_of_range{"Header index out of range."};
 
-    rows[row][column] = data;
+    rows[row][header] = data;
+}
+
+void ConsoleTable::updateHeader(unsigned int header, std::string text) {
+    if(header > headers.size())
+        throw std::out_of_range{"Header index out of range."};
+
+    headers[header] = text;
 }
 
 

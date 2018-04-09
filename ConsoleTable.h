@@ -16,8 +16,8 @@ class ConsoleTable {
 public:
 
     /// Initialize a new ConsoleTable
-    /// \param columns Stringlist of the tables columns
-    ConsoleTable(std::initializer_list<std::string> columns);
+    /// \param headers Stringlist of the tables headers
+    ConsoleTable(std::initializer_list<std::string> headers);
 
 
     /// Sets the distance from the text to the cell border
@@ -53,9 +53,15 @@ public:
 
     /// Update an existing table cell with new data
     /// \param row The index of the row that needs to be updated
-    /// \param column The index of the column that needs to be updated
+    /// \param header The index of the column that needs to be updated
     /// \param data The new data that should be assigned to teh cell
-    void updateRow(unsigned int row, unsigned int column, std::string data);
+    void updateRow(unsigned int row, unsigned int header, std::string data);
+
+
+    /// Update a header with new text
+    /// \param header Index of the header that should be updated
+    /// \param text The new teext of the new header
+    void updateHeader(unsigned int header, std::string text);
 
 
     /// Operator of the addRow() function
