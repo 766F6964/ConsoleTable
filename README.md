@@ -2,6 +2,9 @@
 ConsoleTable is a library that allows you to organize your data in a table based structure.
 
 ## Overview
+
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+
 Sometimes, it can be very frustrating to display data in a console with proper alignment. 
 To make this easier, ConsoleTable was created. It is a customizable text based table structure which is really convenient to use.
 It allows you to organize your data in a table structure where you can easily add, update and delete rows.
