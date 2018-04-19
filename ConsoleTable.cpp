@@ -26,6 +26,9 @@ void ConsoleTable::setStyle(unsigned int n) {
         case 2 :
             style = DoubleLineStyle;
             break;
+        case 3 :
+            style = InvisibleStyle;
+            break;
         default :
             style = BasicStyle;
             break;
@@ -135,16 +138,16 @@ bool ConsoleTable::sort(bool ascending) {
 }
 
 void ConsoleTable::updateRow(unsigned int row, unsigned int header, std::string data) {
-    if(row > rows.size() -1)
+    if (row > rows.size() - 1)
         throw std::out_of_range{"Row index out of range."};
-    if(header > headers.size() -1)
+    if (header > headers.size() - 1)
         throw std::out_of_range{"Header index out of range."};
 
     rows[row][header] = data;
 }
 
 void ConsoleTable::updateHeader(unsigned int header, std::string text) {
-    if(header > headers.size())
+    if (header > headers.size())
         throw std::out_of_range{"Header index out of range."};
 
     headers[header] = text;

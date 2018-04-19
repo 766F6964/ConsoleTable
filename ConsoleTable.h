@@ -29,6 +29,7 @@ public:
     /// n = 0 : Basic table style
     /// n = 1 : Single lined table style
     /// n = 2 : Double lined table style
+    /// n = 3 : Invisivle table lines style
     /// \param n The table style number
     void setStyle(unsigned int n);
 
@@ -107,6 +108,7 @@ private:
     TableStyle BasicStyle = {"-", "|", {"+", "+", "+"}, {"+", "+", "+"}, {"+", "+", "+"}};
     TableStyle LineStyle = {"━", "┃", {"┏", "┳", "┓"}, {"┣", "╋", "┫"}, {"┗", "┻", "┛"}};
     TableStyle DoubleLineStyle = {"═", "║", {"╔", "╦", "╗"}, {"╠", "╬", "╣"}, {"╚", "╩", "╝"}};
+    TableStyle InvisibleStyle = {" ", " ", {" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
     TableStyle style = BasicStyle;
 
     std::string space = " ";

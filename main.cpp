@@ -6,7 +6,7 @@ int main() {
     ConsoleTable table{"Country", "Capital", "Population", "Area", "Currency"};
 
     table.setPadding(2);
-    table.setStyle(0);
+    table.setStyle(3);
 
     table += {"Germany", "Berlin", "82,800,000", "357,168 km2", "Euro"};
     table += {"France", "Paris", "67,201,000", "640,679 km2 ", "Euro"};
@@ -17,7 +17,10 @@ int main() {
     table += {"Netherlands", "Amsterdam", "17,200,671", "41,543 km2", "Euro"};
 
     table.updateRow(3, 1, "NEW ENTRY");
+
     table -= 2;
+    table -= 1;
+    table -= 0;
     table.sort(true);
 
     std::cout << table;
