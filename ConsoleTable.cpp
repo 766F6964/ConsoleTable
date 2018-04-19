@@ -1,9 +1,7 @@
 #include "ConsoleTable.h"
 
 
-ConsoleTable::ConsoleTable(std::initializer_list<std::string> headers) {
-    this->headers = {headers};
-
+ConsoleTable::ConsoleTable(std::initializer_list<std::string> headers) : headers{headers} {
     for (std::string column : headers) {
         widths.push_back(column.length());
     }
@@ -11,7 +9,7 @@ ConsoleTable::ConsoleTable(std::initializer_list<std::string> headers) {
 
 
 void ConsoleTable::setPadding(unsigned int n) {
-    this->padding = n;
+    padding = n;
 }
 
 
@@ -41,7 +39,7 @@ bool ConsoleTable::addRow(std::initializer_list<std::string> row) {
         throw std::invalid_argument{"Appended row size must be same as header size"};
     }
 
-    std::vector<std::string> r = std::vector<std::string>{row};
+    auto r = std::vector<std::string>{row};
     rows.push_back(r);
     for (int i = 0; i < r.size(); ++i) {
         widths[i] = std::max(r[i].size(), widths[i]);
@@ -69,7 +67,7 @@ ConsoleTable &ConsoleTable::operator+=(std::initializer_list<std::string> row) {
 }
 
 
-ConsoleTable &ConsoleTable::operator-=(unsigned int rowIndex) {
+ConsoleTable &ConsoleTable::operator-=(const uint32_t rowIndex) {
     if (rows.size() < rowIndex)
         throw std::out_of_range{"Row index out of range."};
 
@@ -96,7 +94,7 @@ std::string ConsoleTable::getHeaders(Headers headers) const {
     line << style.vertical;
     for (int i = 0; i < headers.size(); ++i) {
         std::string text = headers[i];
-        line << space * padding + text + space * (widths[i] - text.length()) + space * padding;
+        line << SPACE_CHARACTER * padding + text + SPACE_CHARACTER * (widths[i] - text.length()) + SPACE_CHARACTER * padding;
         line << style.vertical;
     }
     line << "\n";
@@ -110,7 +108,7 @@ std::string ConsoleTable::getRows(Rows rows) const {
         line << style.vertical;
         for (int j = 0; j < rows[i].size(); ++j) {
             std::string text = rows[i][j];
-            line << space * padding + text + space * (widths[j] - text.length()) + space * padding;
+            line << SPACE_CHARACTER * padding + text + SPACE_CHARACTER * (widths[j] - text.length()) + SPACE_CHARACTER * padding;
             line << style.vertical;
         }
         line << "\n";

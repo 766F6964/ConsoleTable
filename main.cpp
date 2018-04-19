@@ -6,7 +6,7 @@ int main() {
     ConsoleTable table{"Country", "Capital", "Population", "Area", "Currency"};
 
     table.setPadding(2);
-    table.setStyle(3);
+    table.setStyle(0);
 
     table += {"Germany", "Berlin", "82,800,000", "357,168 km2", "Euro"};
     table += {"France", "Paris", "67,201,000", "640,679 km2 ", "Euro"};

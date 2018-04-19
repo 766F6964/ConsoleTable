@@ -5,7 +5,6 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
-#include <memory>
 #include <algorithm>
 
 typedef std::vector<std::string> Headers;
@@ -74,8 +73,10 @@ public:
     /// Operator of the removeRow() function
     /// \param rowIndex The index of the row that should be removed
     /// \return this
-    ConsoleTable &operator-=(unsigned int rowIndex);
+    ConsoleTable &operator-=(uint32_t rowIndex);
 
+
+private:
 
     /// Holds all header strings of the table
     Headers headers;
@@ -88,7 +89,6 @@ public:
     /// Holds the size of widest string of each column of the table
     Widths widths;
 
-private:
 
     struct RowType {
         std::string left;
@@ -111,7 +111,7 @@ private:
     TableStyle InvisibleStyle = {" ", " ", {" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
     TableStyle style = BasicStyle;
 
-    std::string space = " ";
+    const std::string SPACE_CHARACTER = " ";
 
 
     /// The distance between the cell text and the cell border
