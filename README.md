@@ -33,7 +33,7 @@ The padding size can be set as follows
 ```cpp
 table.setPadding(2); // Sets a padding of 2 for each cell
 ```
-The user can choose between a total of four different table layouts. `0` is the default style. `1` is a single, `2` a double outlined style and 3 an invisible table styles with no lines at all. To change the style call
+The user can choose between a total of four different table layouts. `0` is the default style. `1` is a single, `2` a double outlined style and `3` an invisible table styles with no lines at all. To change the style call
 ```cpp
 table.setStyle(0); // Sets the default table style
 ```
