@@ -2,7 +2,7 @@
 
 
 ConsoleTable::ConsoleTable(std::initializer_list<std::string> headers) : headers{headers} {
-    for (std::string column : headers) {
+    for (const auto &column : headers) {
         widths.push_back(column.length());
     }
 }
@@ -41,7 +41,7 @@ bool ConsoleTable::addRow(std::initializer_list<std::string> row) {
 
     auto r = std::vector<std::string>{row};
     rows.push_back(r);
-    for (int i = 0; i < r.size(); ++i) {
+    for (unsigned int i = 0; i < r.size(); ++i) {
         widths[i] = std::max(r[i].size(), widths[i]);
     }
     return true;
@@ -72,15 +72,14 @@ ConsoleTable &ConsoleTable::operator-=(const uint32_t rowIndex) {
         throw std::out_of_range{"Row index out of range."};
 
     removeRow(rowIndex);
-
 }
 
 
 std::string ConsoleTable::getLine(RowType rowType) const {
     std::stringstream line;
     line << rowType.left;
-    for (int i = 0; i < widths.size(); ++i) {
-        for (int j = 0; j < (widths[i] + padding + padding); ++j) {
+    for (unsigned int i = 0; i < widths.size(); ++i) {
+        for (unsigned int j = 0; j < (widths[i] + padding + padding); ++j) {
             line << style.horizontal;
         }
         line << (i == widths.size() - 1 ? rowType.right : rowType.intersect);
@@ -92,7 +91,7 @@ std::string ConsoleTable::getLine(RowType rowType) const {
 std::string ConsoleTable::getHeaders(Headers headers) const {
     std::stringstream line;
     line << style.vertical;
-    for (int i = 0; i < headers.size(); ++i) {
+    for (unsigned int i = 0; i < headers.size(); ++i) {
         std::string text = headers[i];
         line << SPACE_CHARACTER * padding + text + SPACE_CHARACTER * (widths[i] - text.length()) + SPACE_CHARACTER * padding;
         line << style.vertical;
@@ -104,10 +103,10 @@ std::string ConsoleTable::getHeaders(Headers headers) const {
 
 std::string ConsoleTable::getRows(Rows rows) const {
     std::stringstream line;
-    for (int i = 0; i < rows.size(); ++i) {
+    for (auto &row : rows) {
         line << style.vertical;
-        for (int j = 0; j < rows[i].size(); ++j) {
-            std::string text = rows[i][j];
+        for (unsigned int j = 0; j < row.size(); ++j) {
+            std::string text = row[j];
             line << SPACE_CHARACTER * padding + text + SPACE_CHARACTER * (widths[j] - text.length()) + SPACE_CHARACTER * padding;
             line << style.vertical;
         }

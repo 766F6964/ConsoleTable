@@ -7,12 +7,13 @@
 #include <sstream>
 #include <algorithm>
 
-typedef std::vector<std::string> Headers;
-typedef std::vector<std::vector<std::string>> Rows;
-typedef std::vector<std::size_t> Widths;
 
 class ConsoleTable {
 public:
+
+    typedef std::vector<std::string> Headers;
+    typedef std::vector<std::vector<std::string>> Rows;
+    typedef std::vector<std::size_t> Widths;
 
     /// Initialize a new ConsoleTable
     /// \param headers Stringlist of the tables headers
@@ -89,15 +90,15 @@ private:
     /// Holds the size of widest string of each column of the table
     Widths widths;
 
-
+    /// Defines row type
     struct RowType {
         std::string left;
         std::string intersect;
         std::string right;
     };
 
+    /// Defines table style rows (top, middle, bottom etc)
     struct TableStyle {
-
         std::string horizontal;
         std::string vertical;
         RowType top;
@@ -105,12 +106,28 @@ private:
         RowType bottom;
     };
 
+
+    /// Basic style - works on all systems, used as default style
     TableStyle BasicStyle = {"-", "|", {"+", "+", "+"}, {"+", "+", "+"}, {"+", "+", "+"}};
+
+
+    /// Single lined style - requires speecial character support
     TableStyle LineStyle = {"━", "┃", {"┏", "┳", "┓"}, {"┣", "╋", "┫"}, {"┗", "┻", "┛"}};
+
+
+    /// Single double style - requires speecial character support
     TableStyle DoubleLineStyle = {"═", "║", {"╔", "╦", "╗"}, {"╠", "╬", "╣"}, {"╚", "╩", "╝"}};
+
+
+    /// No visible table outlines - works on all systems
     TableStyle InvisibleStyle = {" ", " ", {" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
+
+
+    /// Current table style
     TableStyle style = BasicStyle;
 
+
+    /// Space character constant
     const std::string SPACE_CHARACTER = " ";
 
 

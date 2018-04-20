@@ -17,6 +17,7 @@ int main() {
     table += {"Netherlands", "Amsterdam", "17,200,671", "41,543 km2", "Euro"};
 
     table.updateRow(3, 1, "NEW ENTRY");
+    table.updateHeader(2, "NEW HEADER");
 
     table -= 2;
     table -= 1;
