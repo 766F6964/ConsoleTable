@@ -72,6 +72,7 @@ ConsoleTable &ConsoleTable::operator-=(const uint32_t rowIndex) {
         throw std::out_of_range{"Row index out of range."};
 
     removeRow(rowIndex);
+    return *this;
 }
 
 
