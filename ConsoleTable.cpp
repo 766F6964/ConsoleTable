@@ -1,12 +1,11 @@
 #include "ConsoleTable.h"
 
 
-ConsoleTable::ConsoleTable(std::initializer_list<std::string> headers) : headers{headers} {
+ConsoleTable::ConsoleTable(const std::initializer_list<std::string> headers) : headers{headers} {
     for (const auto &column : headers) {
         widths.push_back(column.length());
     }
 }
-
 
 void ConsoleTable::setPadding(unsigned int n) {
     padding = n;
@@ -15,24 +14,23 @@ void ConsoleTable::setPadding(unsigned int n) {
 
 void ConsoleTable::setStyle(unsigned int n) {
     switch (n) {
-        case 0 :
-            style = BasicStyle;
-            break;
-        case 1 :
-            style = LineStyle;
-            break;
-        case 2 :
-            style = DoubleLineStyle;
-            break;
-        case 3 :
-            style = InvisibleStyle;
-            break;
-        default :
-            style = BasicStyle;
-            break;
+    case 0 :
+        style = BasicStyle;
+        break;
+    case 1 :
+        style = LineStyle;
+        break;
+    case 2 :
+        style = DoubleLineStyle;
+        break;
+    case 3 :
+        style = InvisibleStyle;
+        break;
+    default :
+        style = BasicStyle;
+        break;
     }
 }
-
 
 bool ConsoleTable::addRow(std::initializer_list<std::string> row) {
     if (row.size() > widths.size()) {
@@ -42,7 +40,7 @@ bool ConsoleTable::addRow(std::initializer_list<std::string> row) {
     auto r = std::vector<std::string>{row};
     rows.push_back(r);
     for (unsigned int i = 0; i < r.size(); ++i) {
-        widths[i] = std::max(r[i].size(), widths[i]);
+        widths[i] = std::max(r[i].size() - searchColor(r[i]), widths[i]);
     }
     return true;
 }
@@ -75,7 +73,6 @@ ConsoleTable &ConsoleTable::operator-=(const uint32_t rowIndex) {
     return *this;
 }
 
-
 std::string ConsoleTable::getLine(RowType rowType) const {
     std::stringstream line;
     line << rowType.left;
@@ -89,7 +86,7 @@ std::string ConsoleTable::getLine(RowType rowType) const {
 }
 
 
-std::string ConsoleTable::getHeaders(Headers headers) const {
+std::string ConsoleTable::getHeaders(const Headers &headers) const {
     std::stringstream line;
     line << style.vertical;
     for (unsigned int i = 0; i < headers.size(); ++i) {
@@ -102,13 +99,13 @@ std::string ConsoleTable::getHeaders(Headers headers) const {
 }
 
 
-std::string ConsoleTable::getRows(Rows rows) const {
+std::string ConsoleTable::getRows(const Rows &rows) const {
     std::stringstream line;
-    for (auto &row : rows) {
+    for (const auto &row : rows) {
         line << style.vertical;
         for (unsigned int j = 0; j < row.size(); ++j) {
             std::string text = row[j];
-            line << SPACE_CHARACTER * padding + text + SPACE_CHARACTER * (widths[j] - text.length()) + SPACE_CHARACTER * padding;
+            line << SPACE_CHARACTER * padding + text + SPACE_CHARACTER * (widths[j] - text.length() + searchColor(text)) + SPACE_CHARACTER * padding;
             line << style.vertical;
         }
         line << "\n";
@@ -135,7 +132,7 @@ bool ConsoleTable::sort(bool ascending) {
     return true;
 }
 
-void ConsoleTable::updateRow(unsigned int row, unsigned int header, std::string data) {
+void ConsoleTable::updateRow(unsigned int row, unsigned int header, const std::string &data) {
     if (row > rows.size() - 1)
         throw std::out_of_range{"Row index out of range."};
     if (header > headers.size() - 1)
@@ -144,13 +141,25 @@ void ConsoleTable::updateRow(unsigned int row, unsigned int header, std::string 
     rows[row][header] = data;
 }
 
-void ConsoleTable::updateHeader(unsigned int header, std::string text) {
+void ConsoleTable::updateHeader(unsigned int header, const std::string &text) {
     if (header > headers.size())
         throw std::out_of_range{"Header index out of range."};
 
     headers[header] = text;
 }
 
+size_t ConsoleTable::searchColor(const std::string &text) const{
+    size_t pos = text.find(COLOR_INITIATOR_CHARACTER,0);
+    size_t counter = 0;
+    if (pos != std::string::npos){
+        counter = countCharacters(counter, pos, text, COLOR_FINAL_CHARACTER);
+        size_t rpos = text.rfind("\e");
+        if (rpos  != std::string::npos && rpos > pos)
+            counter = countCharacters(counter, rpos, text, COLOR_FINAL_CHARACTER);
+        return counter;
+    }
+    return counter;
+}
 
 std::string operator*(const std::string &other, int repeats) {
     std::string ret;
@@ -158,4 +167,14 @@ std::string operator*(const std::string &other, int repeats) {
     for (; repeats; --repeats)
         ret.append(other);
     return ret;
+}
+
+size_t countCharacters(size_t counter, size_t pos,const std::string &text, char characterBreaker){
+    counter++;
+    for(size_t i = pos; i < text.length(); i++){
+        if(text[i] == characterBreaker)
+            break;
+        counter++;
+    }
+    return counter;
 }
