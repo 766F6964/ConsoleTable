@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-
+#include <cstdint>
 
 class ConsoleTable {
 public:
@@ -17,7 +17,7 @@ public:
 
     /// Initialize a new ConsoleTable
     /// \param headers Stringlist of the tables headers
-    ConsoleTable(std::initializer_list<std::string> headers);
+    ConsoleTable(const std::initializer_list<std::string> headers);
 
 
     /// Sets the distance from the text to the cell border
@@ -56,13 +56,13 @@ public:
     /// \param row The index of the row that needs to be updated
     /// \param header The index of the column that needs to be updated
     /// \param data The new data that should be assigned to teh cell
-    void updateRow(unsigned int row, unsigned int header, std::string data);
+    void updateRow(unsigned int row, unsigned int header,const std::string &data);
 
 
     /// Update a header with new text
     /// \param header Index of the header that should be updated
     /// \param text The new teext of the new header
-    void updateHeader(unsigned int header, std::string text);
+    void updateHeader(unsigned int header,const std::string &text);
 
 
     /// Operator of the addRow() function
@@ -130,6 +130,11 @@ private:
     /// Space character constant
     const std::string SPACE_CHARACTER = " ";
 
+    /// Color initiator character constant
+    const std::string COLOR_INITIATOR_CHARACTER = "\e";
+
+    /// Color final character constant
+    const char COLOR_FINAL_CHARACTER = 'm';
 
     /// The distance between the cell text and the cell border
     unsigned int padding = 1;
@@ -144,13 +149,13 @@ private:
     /// Returns a formatted header string
     /// \param headers The Headers-object that holds the header strings
     /// \return The formatted header string
-    std::string getHeaders(Headers headers) const;
+    std::string getHeaders(const Headers &headers) const;
 
 
     /// Returns a formmatted row string
     /// \param rows The Rows-object that holds all rows of the table
     /// \return A formatted string of all rows in the table
-    std::string getRows(Rows rows) const;
+    std::string getRows(const Rows &rows) const;
 
 
     /// Writes the entire table with all its contents in the output stream
@@ -160,6 +165,11 @@ private:
     /// \return Output stream with the formatted table string
     friend std::ostream &operator<<(std::ostream &out, const ConsoleTable &consoleTable);
 
+    /// Search color into the introduced text, return the number of
+    /// characters that you need to remove from the size.
+    /// \param text variable that contain text to analize
+    /// \return number of characters to remove from the size
+    size_t searchColor(const std::string &text) const;
 };
 
 
@@ -169,5 +179,12 @@ private:
 /// \return The repeated string
 std::string operator*(const std::string &other, int repeats);
 
+/// Count characters from position to characterBreaker and previous count
+/// \param counter this variable is the previous count
+/// \param pos is the position of the string that you need to start
+/// \param text strint to analize
+/// \param characterBreaker character to break the count
+/// \return return the count of characters
+size_t countCharacters(size_t counter, size_t pos,const std::string &text, char characterBreaker) ;
 
 #endif //CONSOLETABLE_CONSOLETABLE_H
